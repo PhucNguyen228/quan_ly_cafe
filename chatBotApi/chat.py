@@ -61,7 +61,8 @@ def chat():
                     response = random.choice(intent['responses'])
                     return response
         else:
-            print(f"{bot_name}: I do not understand...")
+            response = "Oops! Something went wrong. I do not understand..."
+            return response
 
 if __name__ == "__main__":
     app.run()

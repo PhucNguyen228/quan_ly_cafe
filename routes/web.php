@@ -52,6 +52,7 @@ Route::post('/update-password', [CustomerController::class, 'updatePassword']);
 // QUẢN LÝ ONLINE
 Route::group(['prefix' => '/cafe'], function () {
     Route::get('/homepage', [HomePageOlineController::class, 'index']);
+    Route::post('/chatbot', [HomePageOlineController::class, 'chat'])->name('chatbot.chat');
     Route::get('/customer/login', [\App\Http\Controllers\CustomerController::class, 'login']);
     Route::post('/customer/login', [CustomerController::class, 'loginAction']);
     Route::get('/customer/register', [\App\Http\Controllers\CustomerController::class, 'register']);
@@ -103,6 +104,7 @@ Route::group(['prefix' => '/shipper', 'middleware' => 'ShipperWare'], function (
 
 //QUẢN LÝ ADMIN
 Route::get('/admin/login', [\App\Http\Controllers\AdminController::class, 'index']);
+Route::post('/filter', [\App\Http\Controllers\AdminController::class, 'filter'])->name('admin.doanh_thu.filter');
 Route::post('/admin/login', [\App\Http\Controllers\AdminController::class, 'loginAdmin']);
 Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function () {
     Route::get('/logout', [\App\Http\Controllers\AdminController::class, 'logout']);

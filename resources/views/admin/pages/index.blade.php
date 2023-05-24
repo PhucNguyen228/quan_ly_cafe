@@ -554,159 +554,35 @@
                 <!--/ Statistics Card -->
             </div>
 
-            <div class="row match-height">
-                <!-- Revenue Report Card -->
-                <div class="col-lg-12 col-12">
-                    <div class="card card-revenue-budget">
-                        <div class="row mx-0">
-                            <div class="col-md-12 col-12 revenue-report-wrapper">
-                                <div class="d-sm-flex justify-content-between align-items-center mb-3">
-                                    <h4 class="card-title mb-50 mb-sm-0">Tổng doanh thu</h4>
-                                </div>
-                                @if ($errors->any())
-                                    <div class="card-header">
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-                                @endif
-                                <form class="row ml-lg-1" method="POST" autocomplete="off">
-                                    @csrf
-                                    <div class="col-md-2">
-                                        <span>Từ Năm: </span>
-                                        <input type="text" class="form-control" name="datepicker" id="datepicker" />
-                                        <span>Từ Năm:</span>
-                                        <input type="text" class="form-control" name="datepicker" id="datepicker2" />
-                                        <input type="button" id="btn-dashboard-filter" class="btn btn-primary btn-sm"
-                                            value="Lọc kết quả">
-                                    </div>
-                                </form>
-                                {{-- <div class="col-md-12">
-                                    <div id="Chart" style="height: 250px;">
 
-                                    </div>
-                                </div> --}}
-
-
-                                <div class="col-md-12">
-                                    <div id="Chart"
-                                        style="height: 250px; position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                        <svg height="250" version="1.1" width="1310"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            style="overflow: hidden; position: relative; left: -0.333344px; top: -0.097229px;">
-                                            <desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with
-                                                Raphaël 2.1.0</desc>
-                                            <defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><text
-                                                x="79.66970825195312" y="211.6666669845581" text-anchor="end"
-                                                font="10px &quot;Arial&quot;" stroke="none" fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal">
-                                                <tspan dy="4.000000476837158"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">0</tspan>
-                                            </text>
-                                            <path fill="none" stroke="#aaaaaa"
-                                                d="M92.16970825195312,211.6666669845581H1285" stroke-width="0.5"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text
-                                                x="79.66970825195312" y="165.00000023841858" text-anchor="end"
-                                                font="10px &quot;Arial&quot;" stroke="none" fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal">
-                                                <tspan dy="4.000005483627319"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">100,000,000
-                                                </tspan>
-                                            </text>
-                                            <path fill="none" stroke="#aaaaaa"
-                                                d="M92.16970825195312,165.00000023841858H1285" stroke-width="0.5"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text
-                                                x="79.66970825195312" y="118.33333349227905" text-anchor="end"
-                                                font="10px &quot;Arial&quot;" stroke="none" fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal">
-                                                <tspan dy="4.000002861022949"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">200,000,000
-                                                </tspan>
-                                            </text>
-                                            <path fill="none" stroke="#aaaaaa"
-                                                d="M92.16970825195312,118.33333349227905H1285" stroke-width="0.5"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text
-                                                x="79.66970825195312" y="71.66666674613953" text-anchor="end"
-                                                font="10px &quot;Arial&quot;" stroke="none" fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal">
-                                                <tspan dy="4.000000238418579"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">300,000,000
-                                                </tspan>
-                                            </text>
-                                            <path fill="none" stroke="#aaaaaa"
-                                                d="M92.16970825195312,71.66666674613953H1285" stroke-width="0.5"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text
-                                                x="79.66970825195312" y="25" text-anchor="end"
-                                                font="10px &quot;Arial&quot;" stroke="none" fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal">
-                                                <tspan dy="4.000000476837158"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">400,000,000
-                                                </tspan>
-                                            </text>
-                                            <path fill="none" stroke="#aaaaaa" d="M92.16970825195312,25H1285"
-                                                stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                            </path><text x="254.82838439941406" y="224.1666669845581"
-                                                text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none"
-                                                fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal"
-                                                transform="matrix(1,0,0,1,0,6.6667)">
-                                                <tspan dy="4.000000476837158"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">02/22</tspan>
-                                            </text><text x="146.38926696777344" y="224.1666669845581"
-                                                text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none"
-                                                fill="#888888"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font: 12px sans-serif;"
-                                                font-size="12px" font-family="sans-serif" font-weight="normal"
-                                                transform="matrix(1,0,0,1,0,6.6667)">
-                                                <tspan dy="4.000000476837158"
-                                                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">01/22</tspan>
-                                            </text>
-                                            <rect x="105.7245979309082" y="158.66453542762935"
-                                                width="81.32933807373047" height="53.00213155692876" r="0"
-                                                rx="0" ry="0" fill="#0b62a4" stroke="none"
-                                                fill-opacity="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;">
-                                            </rect>
-                                            <rect x="214.16371536254883" y="82.31058163093266"
-                                                width="81.32933807373047" height="129.35608535362545" r="0"
-                                                rx="0" ry="0" fill="#0b62a4" stroke="none"
-                                                fill-opacity="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;">
-                                            </rect>
-                                        </svg>
-
-                                        <div class="morris-hover morris-default-style"
-                                            style="left: 57.4308px; top: 96px; display: none;">
-                                            <div class="morris-hover-row-label">01/22</div>
-                                            <div class="morris-hover-point" style="color: #0b62a4">
-                                                Tháng Thu Nhập:
-                                                113,575,996
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--/ Revenue Report Card -->
-            </div>
         </section>
         <!-- Dashboard Ecommerce ends -->
 
     </div>
-    {{-- <script type="text/javascript">
+
+    <form class="row ml-lg-1" method="POST" autocomplete="off">
+        @csrf
+        <div class="col-md-2">
+            <span>Từ Năm: </span>
+            <input type="text" class="form-control" name="datepicker" id="datepicker" />
+            <button type="button" id="btn-dashboard-filter" class="btn btn-primary btn-sm">Lọc kết quả</button>
+        </div>
+    </form>
+    <div class="col-md-12">
+        <div id="Chart" style="height: 250px;">
+            {{-- {{ $get }} --}}
+        </div>
+    </div>
+@endsection
+@section('js')
+    <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             // chart30days();
             var chart = new Morris.Bar({
                 element: 'Chart',
@@ -727,64 +603,25 @@
                 labels: ['Tháng Thu Nhập', 'Tổng Tiền'],
             });
 
-            // $('.dashboard-filter').change(function() {
-            //     var dashboard_value = $(this).val();
-            //     var _token = $('input[name="_token"]').val();
-            //     $.ajax({
-            //         url: "{{ route('dashboard_filter') }}",
-            //         method: "POST",
-            //         data: "JSON",
-            //         data: {
-            //             dashboard_value: dashboard_value,
-            //             _token: _token
-            //         },
-            //         success: function(data) {
-            //             chart.setData(JSON.parse(data));
-            //             // thử in ra xem có đúng không
-            //         }
-            //     });
-            // });
-
-            // $('#btn-dashboard-filter').click(function() {
-            //     // alert('ok man');
-            //     var _token = $('input[name="_token"]').val();
-            //     var from_date = $('#datepicker').val();
-            //     var to_date = $('#datepicker2').val();
-            //     // alert(from_date);
-            //     // alert(to_date);
-            //     $.ajax({
-            //         url: "{{ route('admin.doanh_thu.filter') }}",
-            //         method: "POST",
-            //         data: "JSON",
-            //         data: {
-            //             from_date: from_date,
-            //             to_date: to_date,
-            //             _token: _token
-            //         },
-            //         success: function(data) {
-            //             $('#myAreaChart').html('');
-            //             $('#myAreaChart').html(data);
-            //             chart.setData(JSON.parse(data));
-            //             console.log(JSON.parse(data));
-            //         }
-            //     });
-            // });
-            console.log(chart);
-
-            $(function() {
-                $("#datepicker").datepicker({
-                    format: "yyyy",
-                    viewMode: "years",
-                    minViewMode: "years",
-                    autoclose: true //to close picker once year is selected
-                });
-                $("#datepicker2").datepicker({
-                    format: "yyyy",
-                    viewMode: "years",
-                    minViewMode: "years",
-                    autoclose: true //to close picker once year is selected
+            $('#btn-dashboard-filter').click(function() {
+                var _token = $('input[name="_token"]').val();
+                var from_date = $('#datepicker').val();
+                // alert(from_date);
+                // alert(to_date);
+                $.ajax({
+                    url: "{{ route('admin.doanh_thu.filter') }}",
+                    method: "POST",
+                    data: {
+                        from_date: from_date,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        console.log(data); // In ra dữ liệu trả về để kiểm tra
+                        chart.setData(data);
+                        console.log(data);
+                    }
                 });
             });
         });
-    </script> --}}
+    </script>
 @endsection

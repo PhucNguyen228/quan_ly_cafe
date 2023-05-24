@@ -2,7 +2,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div  class="main-card mb-3 card" style="margin-left: 10px">
+            <div class="main-card mb-3 card" style="margin-left: 10px">
                 {{-- <div class="card-body" style="text-align: center"> --}}
                 <table style="overflow-x: scroll" class="mb-0 table table-bordered" id="tableCustomer">
                     <thead>
@@ -58,31 +58,58 @@
                 </div>
             </div> --}}
 
-            <div class="row justify-content-end">
+            <div class="row justify-content-around">
+                <div class="col-lg-7 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated">
+                    <div class="container">
+                        <div id="myMap" style="position:relative;width:750px;height:300px;"></div>
+                        <b>Nhập thông tin địa chỉ</b>
+                        <form action="">
+                            <input type="text" id="address" name="address" value=""
+                                placeholder="nhập địa chỉ số nhà" />
+                            <select name="" id="province">
+                            </select>
+                            <select name="" id="district">
+                                <option value="">chọn quận</option>
+                            </select>
+                            <select name="" id="ward">
+                                <option value="">chọn phường</option>
+                            </select>
+                        </form>
 
-                <div class="col-lg-4 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated">
+
+                        <h2 id="result"></h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated">
                     <div class="cart-total mb-3">
                         <h3>Thông tin và địa chỉ giao hàng</h3>
                         <p>Nhập thông tin</p>
                         <form action="#" class="info">
                             <div class="form-group">
                                 <label for="">Họ tên </label>
-                                <input name="ho_va_ten"  value="{{$customer->ho_va_ten}}" id="ho_va_ten" type="text" class="form-control text-left px-3" placeholder="">
+                                <input name="ho_va_ten" value="{{ $customer->ho_va_ten }}" id="ho_va_ten" type="text"
+                                    class="form-control text-left px-3" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="country">Số điện thoại</label>
-                                <input id="so_dien_thoai" name="so_dien_thoai" value="{{$customer->so_dien_thoai}}" type="text" class="form-control text-left px-3" placeholder="">
+                                <input id="so_dien_thoai" name="so_dien_thoai" value="{{ $customer->so_dien_thoai }}"
+                                    type="text" class="form-control text-left px-3" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="country">Địa chỉ nhận hàng</label>
                                 <input id="dia_chi" type="text" class="form-control text-left px-3" placeholder="">
                             </div>
+                            <div class="form-group">
+                                <label for="country">Khoảng cách</label>
+                                <input id="distance" type="text" class="form-control text-left px-3" placeholder="">
+                            </div>
                         </form>
                     </div>
 
                 </div>
-                <div class="col-lg-4 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated">
-                    <div class="cart-total mb-3" >
+                <div class="col-lg-2 mt-5 cart-wrap ftco-animate fadeInUp ftco-animated">
+                    <div class="cart-total mb-3">
                         <h3>Cart Totals</h3>
                         <p class="d-flex">
                             <span>Gía tiền: </span>
@@ -128,6 +155,114 @@
     </div>
 </div>
 @section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type='text/javascript'
+        src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=GetMap&key=AtZYD2JEyo37y8a4FhMiuv2uhn8lwxAcVBrz6GVAyHYl3CGlU051CUAgUqifmAUw'
+        async defer></script>
+    <script>
+        // // 1. what is API
+        // // 2. How do I call API
+        // // 3. Explain code
+        const host = "https://provinces.open-api.vn/api/";
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province");
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district");
+                });
+        }
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward");
+                });
+        }
+
+        var renderData = (array, select) => {
+            let row = ' <option disable value="">chọn</option>';
+            array.forEach(element => {
+                row += `<option value="${element.code}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#province").change(() => {
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
+            printResult();
+        });
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
+            printResult();
+        });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+            if ($("#district").val() != "" && $("#province").val() != "" && $("#ward").val() != "") {
+                let address = $("#address").val();
+                let province = $("#province option:selected").text();
+                let district = $("#district option:selected").text();
+                let ward = $("#ward option:selected").text();
+
+                let result = address + ", " + province + " " + district + " " + ward;
+                document.getElementById('dia_chi').value = result;
+                geocodeAddress(result);
+            }
+        }
+
+        var map, searchManager;
+
+        function GetMap() {
+            map = new Microsoft.Maps.Map('#myMap', {});
+        }
+
+        function geocodeAddress(result) {
+            Microsoft.Maps.loadModule(['Microsoft.Maps.Search', 'Microsoft.Maps.SpatialMath'], function() {
+                var geocoder = new Microsoft.Maps.Search.SearchManager(map);
+                var address = result;
+
+                geocoder.geocode({
+                    where: address,
+                    callback: function(result) {
+                        var location = result.results[0].location;
+                        var latitude = location.latitude;
+                        var longitude = location.longitude;
+                        console.log('Latitude: ' + latitude + ', Longitude: ' + longitude);
+                        var defaultLocation = new Microsoft.Maps.Location(16.057087, 108.1747995);
+                        var pushpin = new Microsoft.Maps.Pushpin(location);
+                        var defaultPushpin = new Microsoft.Maps.Pushpin(defaultLocation);
+
+                        map.entities.push(pushpin);
+                        map.entities.push(defaultPushpin);
+
+                        var distance = Microsoft.Maps.SpatialMath.getDistanceTo(
+                            location,
+                            defaultLocation,
+                            Microsoft.Maps.SpatialMath.DistanceUnits
+                            .Kilometers // Thêm đơn vị đo khoảng cách
+                        );
+
+                        // alert('Khoảng cách giữa hai địa chỉ là: ' + distance + ' Km');
+                        // i want show distance in input
+                        document.getElementById('distance').value = distance.toFixed(0);
+                    },
+                    errorCallback: function(e) {
+                        alert('Không thể tìm thấy địa chỉ');
+                    }
+                });
+            });
+        }
+    </script>
+
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -145,7 +280,7 @@
                         var tongtien = 0;
                         var tongTienThuc = 0;
                         var tienGiam = 0;
-                        $.each(res.data, function(key,value) {
+                        $.each(res.data, function(key, value) {
                             console.log(value);
                             content_table += '<tr class="align-middle">';
                             content_table += '<td> ' + value.ten_san_pham + ' </td>';
@@ -242,28 +377,50 @@
                 var ho_va_ten = $("#ho_va_ten").val();
                 var so_dien_thoai = $("#so_dien_thoai").val();
                 var dia_chi = $("#dia_chi").val();
-                var payload = {
-                    'ho_va_ten': ho_va_ten,
-                    'so_dien_thoai': so_dien_thoai,
-                    'dia_chi': dia_chi,
-                };
-                // console.log(payload);
-                $.ajax({
-                    url: '/cafe/customer/create-don-hang-online',
-                    type: 'post',
-                    data: payload,
-                    success: function(res) {
-                        if (res.status == 1) {
-                            toastr.success("Đã tạo đơn hàng thành công!");
-                            loadTable();
-                        } else if (res.status == 0) {
-                            toastr.success("có lỗi xãy ra");
+                var distance = $("#distance").val();
+                console.log(distance);
 
-                        } else {
-                            toastr.warning("giỏ hàng bị rỗng !")
-                        }
-                    },
-                });
+                var Total = $("#tongTien").text();
+                var thuc_tra = Total.match(/\d+/g).join('');
+
+                var TienThuc = $("#tongTienThuc").text();
+                var tongTienThuc = TienThuc.match(/\d+/g).join('');
+
+                var giamGia = $("#tongTienGiam").text();
+                var tongTienGiam = giamGia.match(/\d+/g).join('');
+
+                if (distance <= 5) {
+                    thuc_tra = thuc_tra * 5;
+                    var payload = {
+                        'ho_va_ten': ho_va_ten,
+                        'so_dien_thoai': so_dien_thoai,
+                        'dia_chi': dia_chi,
+                        'tong_tien': tongTienThuc,
+                        'giam_gia': tongTienGiam,
+                        'thuc_tra': thuc_tra,
+                    };
+                    // console.log(payload);
+                    $.ajax({
+                        url: '/cafe/customer/create-don-hang-online',
+                        type: 'post',
+                        data: payload,
+                        success: function(res) {
+                            if (res.status == 1) {
+                                toastr.success("Đã tạo đơn hàng thành công!");
+                                loadTable();
+                            } else if (res.status == 0) {
+                                toastr.success("có lỗi xãy ra");
+
+                            } else {
+                                toastr.warning("giỏ hàng bị rỗng !")
+                            }
+                        },
+                    });
+                }
+                else {
+                    toastr.warning("không giao hàng quá 5km !");
+                }
+
             });
         });
     </script>

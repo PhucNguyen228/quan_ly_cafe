@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\DB;
 
 class HomePageOlineController extends Controller
 {
+    // chatbot
+    public function chat(Request $request)
+    {
+        $message = $request->input('message');
+        // dd($message);
+
+        $url = "http://127.0.0.1:5000/chat?message=" . urlencode($message);
+
+        $response = file_get_contents($url);
+        // dd($response);
+
+        // return view('store_owner.page_chinh.index', [
+        //     'response' => $response
+        // ]);
+        return response()->json([
+            'response' => $response
+        ]);
+    }
+
     public function index(){
         $sql = "SELECT *, (`gia_ban` - `gia_khuyen_mai`) / `gia_ban` * 100 AS `TYLE` FROM `san_phams` WHERE `is_open` = 1 ORDER BY TYLE DESC";
          $allSanPham = DB::select($sql);

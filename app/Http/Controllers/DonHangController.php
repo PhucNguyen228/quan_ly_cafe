@@ -29,9 +29,9 @@ class DonHangController extends Controller
             if (count($giohang) > 0) {
                 $hoadon = HoaDon::create([
                     'ma_hoa_don'   => Str::uuid(),
-                    'tong_tien'     => 0,
-                    'tien_giam_gia' => 0,
-                    'thuc_tra'      => 0,
+                    'tong_tien'     => $request->tong_tien,
+                    'tien_giam_gia' => $request->giam_gia,
+                    'thuc_tra'      => $request->thuc_tra,
                     'agent_id'      => $agent->id,
                     'loai_thanh_toan'   => 1,
                     'tinh_trang_don_hang' => 1,
@@ -39,17 +39,17 @@ class DonHangController extends Controller
                     'ngay_hoa_don'      => date('Y-m-d'),
                     'hoan_thanh'        => 1,
                 ]);
-                $thuc_tra = 0;
-                $tong_tien = 0;
+                // $thuc_tra = 0;
+                // $tong_tien = 0;
                 foreach ($giohang as $key => $value) {
                     $sanPham = SanPham::find($value->san_pham_id);
                     if ($sanPham) {
-                        $giaBan = $sanPham->gia_khuyen_mai ? $sanPham->gia_khuyen_mai : $sanPham->gia_ban;
-                        $thuc_tra += $value->so_luong * $giaBan;
-                        $tong_tien += $value->so_luong * $sanPham->gia_ban;
+                        // $giaBan = $sanPham->gia_khuyen_mai ? $sanPham->gia_khuyen_mai : $sanPham->gia_ban;
+                        // $thuc_tra += $value->so_luong * $giaBan;
+                        // $tong_tien += $value->so_luong * $sanPham->gia_ban;
 
 
-                        $value->don_gia  = $giaBan;
+                        // $value->don_gia  = $giaBan;
                         $value->is_cart  = 0;
                         $value->hoa_don_id  = $hoadon->id;
 
@@ -63,10 +63,10 @@ class DonHangController extends Controller
                     }
                 }
 
-                $hoadon->thuc_tra = $thuc_tra;
-                $hoadon->tong_tien = $tong_tien;
-                $hoadon->tien_giam_gia = $tong_tien - $thuc_tra;
-                $hoadon->save();
+                // $hoadon->thuc_tra = $thuc_tra;
+                // $hoadon->tong_tien = $tong_tien;
+                // $hoadon->tien_giam_gia = $tong_tien - $thuc_tra;
+                // $hoadon->save();
 
                 return response()->json(['status' => true]);
             } else {

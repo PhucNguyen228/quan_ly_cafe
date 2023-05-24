@@ -27,6 +27,9 @@ class HoaDonRequest extends FormRequest
             'ho_va_ten' => 'required',
             'so_dien_thoai' => 'required',
             'dia_chi'       => 'required',
+            'thuc_tra'      => 'required',
+            'giam_gia'      => 'required',
+            'tong_tien'     => 'required'
         ];
     }
 }
