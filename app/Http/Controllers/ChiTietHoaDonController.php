@@ -100,7 +100,7 @@ class ChiTietHoaDonController extends Controller
                 'don_gia'       => $product->gia_khuyen_mai ? $product->gia_khuyen_mai : $product->gia_ban,
                 'so_luong'      => $quantity,
                 'customer_id'   => $customer->id,
-                'expires_at'    => strtotime('+2 minutes'),
+                'expires_at'    => strtotime('+1 minutes'),
             ];
         }
 

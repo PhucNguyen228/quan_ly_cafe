@@ -64,7 +64,7 @@
                     <div class="cart-total mb-3">
                         <h3>Thông tin và địa chỉ giao hàng</h3>
                         <p>Nhập thông tin</p>
-                        <form action="#" class="info">
+                        <form action="#" class="info" id="resetform">
                             <div class="form-group">
                                 <label for="">Họ tên </label>
                                 <input name="ho_va_ten"  value="{{$customer->ho_va_ten}}" id="ho_va_ten" type="text" class="form-control text-left px-3" placeholder="">
@@ -256,12 +256,19 @@
                         if (res.status == 1) {
                             toastr.success("Đã tạo đơn hàng thành công!");
                             loadTable();
+                            $('#resetform').trigger("reset");
                         } else if (res.status == 0) {
                             toastr.success("có lỗi xãy ra");
 
                         } else {
                             toastr.warning("giỏ hàng bị rỗng !")
                         }
+                    },
+                    error: function(res) {
+                        var listError = res.responseJSON.errors;
+                        $.each(listError, function(key, value) {
+                            toastr.error(value[0]);
+                        });
                     },
                 });
             });

@@ -25,7 +25,7 @@ class UpdatePassword extends FormRequest
     {
         return [
             'password'  => 'required',
-            'id'        => 'required|exists:customers,id',
+            'id'        => 'required|exists:tai_khoans,id',
         ];
     }
 }

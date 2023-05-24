@@ -228,6 +228,8 @@
                             <th class="text-nowrap text-center">Giá Khuyến Mãi</th>
                             <th class="text-nowrap text-center">Tình Trạng</th>
                             <th class="text-nowrap text-center">Danh Mục</th>
+                            <th class="text-nowrap text-center">Hài Lòng</th>
+                            <th class="text-nowrap text-center">Không Hài Lòng</th>
                             <th class="text-nowrap text-center">Action</th>
                         </tr>
                         </thead>
@@ -312,6 +314,8 @@
                         html += '<td>' + value.gia_khuyen_mai + '</td>';
                         html += '<td>' + doan_muon_hien_thi + '</td>';
                         html += '<td>' + value.ten_danh_muc + '</td>';
+                        html += '<td>' + value.tong_hai_long + '</td>';
+                        html += '<td>' + value.tong_k_hai_long + '</td>';
                         html += '<td>';
                         html += '<button class="btn btn-danger nutDelete mr-1" data-iddelete="' + value.id + '" data-toggle="modal" data-target="#exampleModal"> Xóa </button>';
                         html += '<button class="btn btn-success nutEdit" data-idedit="' + value.id + '" data-toggle="modal" data-target="#editModal"> Chỉnh sửa </button>';
