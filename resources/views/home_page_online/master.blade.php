@@ -31,6 +31,7 @@
     <!-- Template Stylesheet -->
     <link href="/home_assets/app_assets/css/style.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
     @toastr_css
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -166,6 +167,8 @@
     <script src="/home_assets/app_assets/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="/assets_admin/app-assets/vendors/js/vendors.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
     <!-- Template Javascript -->
     <script src="/home_assets/app_assets/js/main.js"></script>

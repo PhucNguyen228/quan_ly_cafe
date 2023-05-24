@@ -158,9 +158,9 @@ License: You must have a valid license purchased only from themeforest(the above
                     }
                 });
             }
-            // setInterval(function() {
-            //     loadTable()
-            // }, 1000);
+            setInterval(function() {
+                loadTable()
+            }, 1000);
 
             function loadTableOffline() {
                 $.ajax({
@@ -179,9 +179,9 @@ License: You must have a valid license purchased only from themeforest(the above
                     }
                 });
             }
-            // setInterval(function() {
-            //     loadTableOffline()
-            // }, 1000);
+            setInterval(function() {
+                loadTableOffline()
+            }, 1000);
         });
     </script>
 </body>

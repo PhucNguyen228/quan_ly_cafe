@@ -28,7 +28,7 @@ class UpdateTKNhanVienRequest extends FormRequest
             'so_dien_thoai'     =>  'required|max:50|unique:tai_khoans,so_dien_thoai,'.$this->id,
             'email'             =>  'required|max:50|unique:tai_khoans,email,'.$this->id,
             // 'password'          =>  'required|nullable',
-            'dia_chi'           =>  'required|max:50|unique:tai_khoans,dia_chi,'.$this->id,
+            'dia_chi'           =>  'required|max:50',
             'is_open'           =>  'required|boolean',
             'id'                =>  'required|exists:tai_khoans,id',
         ];

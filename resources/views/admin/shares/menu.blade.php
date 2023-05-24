@@ -88,11 +88,11 @@
                                 data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản Lý Xuất
                                     Kho</span></a>
                         </li>
-                        <li class="{{ request()->is('admin/hoa-don/index') ? 'active' : '' }}" data-menu=""><a
+                        {{-- <li class="{{ request()->is('admin/hoa-don/index') ? 'active' : '' }}" data-menu=""><a
                                 class="dropdown-item d-flex align-items-center " href="/admin/hoa-don/index"
                                 data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản Lý In
                                     Bill</span></a>
-                        </li>
+                        </li> --}}
                         <li class="{{ request()->is('admin/user/index') ? 'active' : '' }}" data-menu=""><a
                                 class="dropdown-item d-flex align-items-center " href="/admin/user/index"
                                 data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản Tài
@@ -113,10 +113,20 @@
                                 data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản Lý Tài
                                     Khoản Shipper</span></a>
                         </li>
+                        <li class="{{ request()->is('admin/customer/index') ? 'active' : '' }}" data-menu=""><a
+                                class="dropdown-item d-flex align-items-center " href="/admin/customer/index"
+                                data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản Lý Tài
+                                    Khoản Khách Hàng</span></a>
+                        </li>
                         <li class="{{ request()->is('admin/doanh-thu/index') ? 'active' : '' }}" data-menu=""><a
                                 class="dropdown-item d-flex align-items-center " href="/admin/doanh-thu/index"
                                 data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản lý Hóa
-                                    Đơn</span></a>
+                                    Đơn Online</span></a>
+                        </li>
+                        <li class="{{ request()->is('admin/doanh-thu/offline/index') ? 'active' : '' }}" data-menu=""><a
+                                class="dropdown-item d-flex align-items-center " href="/admin/doanh-thu/offline/index"
+                                data-toggle="dropdown" data-i18n="eCommerce"><span data-i18n="eCommerce">Quản lý Hóa
+                                    Đơn Offline</span></a>
                         </li>
                     </ul>
                 </li>
@@ -142,13 +152,13 @@
                             {{-- {{ $dem }} --}}
                         </span>
                     </a>
-                    <ul class="dropdown-menu">
+                    {{-- <ul class="dropdown-menu">
                         <li class="{{ request()->is('admin/hoa-don/tinh-trang-don-hang/index') ? 'active' : '' }}"
                             data-menu=""><a class="dropdown-item d-flex align-items-center "
                                 href="/admin/hoa-don-offline/tinh-trang-don-hang/index" data-toggle="dropdown"
                                 data-i18n="eCommerce"><span data-i18n="eCommerce">Tình trạng đơn hàng</span></a>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </li>
             </ul>
         </div>

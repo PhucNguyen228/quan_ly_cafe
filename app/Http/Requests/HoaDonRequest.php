@@ -24,8 +24,8 @@ class HoaDonRequest extends FormRequest
     public function rules()
     {
         return [
-            'ho_va_ten' => 'required',
-            'so_dien_thoai' => 'required',
+            'ho_va_ten'     => 'required',
+            'so_dien_thoai' => 'required|digits:10',
             'dia_chi'       => 'required',
         ];
     }
