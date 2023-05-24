@@ -27,6 +27,7 @@ class CreateHoaDonsTable extends Migration
             $table->date('ngay_hoa_don');
             $table->integer('shipper_id')->nullable();
             $table->integer('hoan_thanh');
+            $table->integer('tinh_trang_ban')->default(1);
             $table->timestamps();
         });
     }
@@ -38,6 +39,7 @@ class CreateHoaDonsTable extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('hoa_dons');
     }
 }

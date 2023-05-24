@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BanRequest;
 use App\Models\Ban;
+use App\Models\HoaDon;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,12 +93,28 @@ class BanController extends Controller
     {
         $ban = Ban::find($id);
         if($ban) {
-            $ban->is_open_oder = !$ban->is_open_oder;
-            $ban->save();
-            return response()->json([
-                'trangThai'         =>  true,
-                'tinhTrangBan'      =>  $ban->is_open_oder,
-            ]);
+            $data = HoaDon::join('bans', 'hoa_dons.id_ban', 'bans.id')
+            ->where('hoa_dons.id_ban', $id)->where('tinh_trang_ban', 1)
+            ->select('bans.*', 'hoa_dons.*')->get();
+            if ($data) {
+                foreach ($data as $value) {
+                    $value->tinh_trang_ban = 2;
+                    $value->save();
+                }
+                $ban->is_open_oder = !$ban->is_open_oder;
+                $ban->save();
+                return response()->json([
+                    'trangThai'         =>  true,
+                    'tinhTrangBan'      =>  $ban->is_open_oder,
+                ]);
+            }else{
+                $ban->is_open_oder = !$ban->is_open_oder;
+                $ban->save();
+                return response()->json([
+                    'trangThai'         =>  true,
+                    'tinhTrangBan'      =>  $ban->is_open_oder,
+                ]);
+            }
         } else {
             return response()->json([
                 'trangThai'         =>  false,
