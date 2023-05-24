@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddCartRequest;
 use App\Models\Ban;
 use App\Models\ChiTietHoaDon;
+use App\Models\HoaDon;
 use App\Models\SanPham;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Session\Session;

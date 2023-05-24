@@ -8,6 +8,7 @@ use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\HoaDonController;
 use App\Http\Controllers\HoaDonCustomerController;
+use App\Http\Controllers\HoaDonOfflineController;
 use App\Http\Controllers\HoaDonOnlineController;
 use App\Http\Controllers\HoaDonShipperController;
 use App\Http\Controllers\HomePageController;
@@ -111,6 +112,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function
     Route::get('/index', [\App\Http\Controllers\AdminController::class, 'homeIndex']);
     Route::get('/dem', [\App\Http\Controllers\AdminController::class, 'demDonHang']);
     Route::get('/dem/offline', [\App\Http\Controllers\AdminController::class, 'demOffline']);
+    Route::get('/dem/customer', [\App\Http\Controllers\AdminController::class, 'demCustomer']);
+
     // Route::post('/getData/{id}', [\App\Http\Controllers\DanhMucSanPhamController::class, 'getData1']);
     Route::group(['prefix' => '/danh-muc-san-pham'], function () {
         Route::get('/index', [\App\Http\Controllers\DanhMucSanPhamController::class, 'index']);
@@ -299,6 +302,12 @@ Route::group(['prefix' => '/customer-off', 'middleware' => ['web', 'CustomerOffM
     Route::get('/ban/index', [ChiTietHoaDonController::class, 'indexBan']);
     Route::get('/ban/data', [ChiTietHoaDonController::class, 'dataBan']);
     Route::post('/create-hoa-don', [DonHangController::class, 'createHoaDon']);
+
+    /// quản lý đơn hàng của customer offline
+    Route::get('/hoa-don/index', [HoaDonOfflineController::class, 'index']);
+    Route::get('/hoa-don/data', [HoaDonOfflineController::class, 'dataHoaDon']);
+    Route::get('/huy/don-hang/{id}', [HoaDonOfflineController::class, 'destroy']);
+
 });
 
 
