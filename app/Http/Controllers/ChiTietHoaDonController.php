@@ -145,7 +145,7 @@ class ChiTietHoaDonController extends Controller
         $customerId = $customer->id;
         // Lọc các phần tử của mảng session dựa trên điều kiện customer_id
         $filteredCart = array_filter($cart, function ($item) use ($customerId) {
-        return isset($item['customer_id']) && $item['customer_id'] == $customerId;
+            return isset($item['customer_id']) && $item['customer_id'] == $customerId;
         });
 
         // Chuyển đổi mảng đã lọc thành một mảng kết quả
@@ -193,9 +193,20 @@ class ChiTietHoaDonController extends Controller
     }
     public function dataBan()
     {
-        $ban = Ban::where('is_open', 1)->where('is_open_oder', 1)->get();
-        return response()->json([
-            'dataBan' => $ban,
-        ]);
+        $customer = Auth::guard('TaiKhoan')->user();
+        // dd($customer);
+        $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->first();
+        // dd($data);
+        if ($data) {
+            $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->select('bans.*')->get();
+            return response()->json([
+                'dataBan' => $data,
+            ]);
+        } else {
+            $ban = Ban::where('is_open', 1)->where('is_open_oder', 1)->get();
+            return response()->json([
+                'dataBan' => $ban,
+            ]);
+        }
     }
 }
