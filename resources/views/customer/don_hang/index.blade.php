@@ -6,7 +6,7 @@
                 <div style="text-align: center">
                     <h3>Các đơn hàng</h3>
                 </div>
-                <table class="table" id="tableDonHang">
+                <table style="overflow: scroll-x" class="table" id="tableDonHang">
                     <thead>
                         <tr>
                             <th scope="col" class="text-nowrap">#</th>
@@ -15,6 +15,7 @@
                             <th scope="col" class="text-nowrap">Ngày đặt</th>
                             <th scope="col" class="text-nowrap">Xem</th>
                             <th scope="col" class="text-nowrap">Tình Trạng Đơn Hàng</th>
+                            <th scope="col" class="text-nowrap">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,7 +123,7 @@
                         $.each(res.dataTinhTrang, function(key, value) {
                             if (value.tinh_trang_don_hang == 1) {
                                 var doan_muon_hien_thi =
-                                    '<div class="btn btn-warning">đang chờ xác nhận</div>';
+                                    '<div class="btn btn-warning">Đang chờ xác nhận</div>';
                             } else if (value.tinh_trang_don_hang == 2) {
                                 var doan_muon_hien_thi =
                                     '<div class="btn btn-danger">Đang chờ shipper</div>';
@@ -143,9 +144,17 @@
                                 value.id +
                                 ' data-toggle="modal" data-target="#seen" >Xem</button>';
                             html += '</td>';
-                            html += '<td class="text-center tinhtrang" data-idhang = "' + value
-                                .id + '">' + doan_muon_hien_thi + '</td>';
+                            if (value.tinh_trang_don_hang == 1) {
+                                html += '<td class="text-center tinhtrang" data-idhang = "' +
+                                    value.id + '">' + doan_muon_hien_thi + '</td>';
+                                html += '<td class="text-center delete" data-iddelete = "' +
+                                    value.id + '"><div class="btn btn-danger">Hủy đơn hàng</div></td>';
+                            } else {
+                                html += '<td class="text-center tinhtrang" data-idhang = "' +
+                                    value.id + '">' + doan_muon_hien_thi + '</td>';
+                            }
                             html += '</tr>';
+
                         });
                         $("#tableDonHang tbody").html(html);
                     },
@@ -217,6 +226,19 @@
                     success: function(res) {
                         if (res.status) {
                             loadTableRight(id);
+                        }
+                    },
+                });
+            });
+            $('body').on('click', '.delete', function() {
+                var id = $(this).data('iddelete');
+                $.ajax({
+                    url: '/cafe/customer/don-hang/huy/' + id,
+                    type: 'get',
+                    success: function(res) {
+                        if (res.status) {
+                            toastr.success("bạn đã hủy thành công đơn hàng");
+                            loadTable();
                         }
                     },
                 });

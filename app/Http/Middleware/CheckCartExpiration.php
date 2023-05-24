@@ -17,11 +17,13 @@ class CheckCartExpiration
      */
     public function handle($request, Closure $next)
     {
+        // dd($request);
         $cart = $request->session()->get('cart');
-
+        // dd($cart);
         if ($cart && isset($cart['expires_at']) && time() > $cart['expires_at']) {
             // Delete the cart if it has expired
             $request->session()->forget('cart');
+            // dd('abs');
         }
 
         return $next($request);

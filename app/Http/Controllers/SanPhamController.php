@@ -39,10 +39,10 @@ class SanPhamController extends Controller
 
     public function getData()
     {
-        $data = SanPham::join('danh_muc_san_phams', 'san_phams.id_danh_muc', 'danh_muc_san_phams.id')
+        // $data = SanPham::join('danh_muc_san_phams', 'san_phams.id_danh_muc', 'danh_muc_san_phams.id')
 
-                        ->select('san_phams.*', 'danh_muc_san_phams.ten_danh_muc')
-                        ->get();
+        //                 ->select('san_phams.*', 'danh_muc_san_phams.ten_danh_muc')
+        //                 ->get();
         // $data = SanPham::join('danh_muc_san_phams', 'san_phams.id_danh_muc', 'danh_muc_san_phams.id')
         //             ->join('danh_gias', 'san_phams.id', 'danh_gias.san_pham_id')
         //             // ->where('san_phams.id_tai_khoan', $check->id)
@@ -59,6 +59,16 @@ class SanPhamController extends Controller
         //             )
         //             ->groupBy('san_phams.id');
         //             $data = $data->get();
+        $data = SanPham::leftJoin('danh_gias', 'danh_gias.san_pham_id', 'san_phams.id')
+                        ->join('danh_muc_san_phams', 'san_phams.id_danh_muc', 'danh_muc_san_phams.id')
+            ->select(
+                'san_phams.*',
+                'danh_muc_san_phams.ten_danh_muc',
+                DanhGia::raw('SUM(COALESCE(muc_do = 1, 0)) AS tong_hai_long'),
+                DanhGia::raw('SUM(COALESCE(muc_do = 2, 0)) AS tong_k_hai_long')
+            )
+            ->groupBy('san_phams.id');
+            $data = $data->get();
 
         return response()->json([
             'dulieuneban' => $data

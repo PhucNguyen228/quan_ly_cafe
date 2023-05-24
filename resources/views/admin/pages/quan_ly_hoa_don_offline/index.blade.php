@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-    <h3>Quản Lý Doanh Thu</h3>
+    <h3>Quản Lý Hóa Đơn Theo Ngày</h3>
 @endsection
 @section('content')
     <div class="row" >
@@ -128,7 +128,7 @@ $(document).ready(function() {
                 'ngay_hoa_don'  : ngay_hoa_don,
             };
             $.ajax({
-                url     :   '/admin/doanh-thu/data',
+                url     :   '/admin/doanh-thu/offline/data',
                 type    :   'post',
                 data    :    payload,
                 success :    function(res) {
@@ -158,7 +158,7 @@ $(document).ready(function() {
     });
     function loadtableRight(id){
         $.ajax({
-                url     :   '/admin/doanh-thu/hoa-don/'+ id,
+                url     :   '/admin/doanh-thu/offline/hoa-don/'+ id,
                 type    :   'get',
                 success :   function(res) {
                         var content_table = '';
@@ -199,7 +199,7 @@ $(document).ready(function() {
     $('body').on('click', '.show', function(){
         var id = $(this).data('idshow');
         $.ajax({
-            url     :   '/admin/doanh-thu/ngay-hoa-don/' + id,
+            url     :   '/admin/doanh-thu/offline/ngay-hoa-don/' + id,
             type    :   'get',
             success :   function(res) {
                 if(res.status) {
@@ -219,7 +219,7 @@ $(document).ready(function() {
                     'ngay_hoa_don'  : ngay_hoa_don,
                 };
                 $.ajax({
-                    url: '/admin/doanh-thu/search',
+                    url: '/admin/doanh-thu/offline/search',
                     type: 'post',
                     data: $payload,
                     success: function (res) {
@@ -250,7 +250,7 @@ $(document).ready(function() {
             };
 
             $.ajax({
-                url     :   '/admin/doanh-thu/updateqty',
+                url     :   '/admin/doanh-thu/offline/updateqty',
                 type    :   'post',
                 data    :   payload,
                 success :   function(res) {
@@ -279,7 +279,7 @@ $(document).ready(function() {
     $("#accpectDelete").click(function(){
         var id = $("#idDeleteSanPham").val();
         $.ajax({
-            url     :   '/admin/doanh-thu/delete/' + id,
+            url     :   '/admin/doanh-thu/offline/delete/' + id,
             type    :   'get',
             success :   function(res) {
                 if(res.status) {
@@ -295,13 +295,13 @@ $(document).ready(function() {
         var id = $("#id_ban_thanh_toan").val();
         // console.log(id);
             $.ajax({
-                url     :'/admin/doanh-thu/in-bill/'+ id,
+                url     :'/admin/doanh-thu/offline/in-bill/'+ id,
                 type    : 'post',
                 success : function(res) {
                     if(res.status == 1){
                         toastr.success("Đã in bill thành công!");
                         loadTableRight();
-                        window.print();
+                        // window.print();
                     }else{
                         toastr.warning("lỗi nha!!!");
                     }

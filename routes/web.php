@@ -8,10 +8,12 @@ use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\HoaDonController;
 use App\Http\Controllers\HoaDonCustomerController;
+use App\Http\Controllers\HoaDonOfflineController;
 use App\Http\Controllers\HoaDonOnlineController;
 use App\Http\Controllers\HoaDonShipperController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\HomePageOlineController;
+use App\Http\Controllers\QuanLyCustomerController;
 use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\TestSQLControler;
@@ -72,6 +74,7 @@ Route::group(['prefix' => '/cafe'], function () {
         Route::post('/thong-tin/update', [HomePageOlineController::class, 'updateThongTin']);
         Route::get('/don-hang', [HoaDonCustomerController::class, 'donHang']);
         Route::get('/don-hang/data', [HoaDonCustomerController::class, 'donHangData']);
+        Route::get('/don-hang/huy/{id}', [HoaDonCustomerController::class, 'huyDonHang']);
         Route::get('/chi-tiet-don-hang/{id}', [HoaDonCustomerController::class, 'chiTiet']);
         Route::get('/chi-tiet-don-hang/data/{id}', [HoaDonCustomerController::class, 'chiTietData']);
         Route::get('/hai-long/{id}', [DanhGiaController::class, 'HaiLong']);
@@ -111,6 +114,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function
     Route::get('/index', [\App\Http\Controllers\AdminController::class, 'homeIndex']);
     Route::get('/dem', [\App\Http\Controllers\AdminController::class, 'demDonHang']);
     Route::get('/dem/offline', [\App\Http\Controllers\AdminController::class, 'demOffline']);
+    Route::get('/dem/customer', [\App\Http\Controllers\AdminController::class, 'demCustomer']);
+
     // Route::post('/getData/{id}', [\App\Http\Controllers\DanhMucSanPhamController::class, 'getData1']);
     Route::group(['prefix' => '/danh-muc-san-pham'], function () {
         Route::get('/index', [\App\Http\Controllers\DanhMucSanPhamController::class, 'index']);
@@ -173,6 +178,13 @@ Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function
         Route::get('/edit/{id}', [\App\Http\Controllers\ShipperController::class, 'edit']);
         Route::post('/update', [\App\Http\Controllers\ShipperController::class, 'update']);
     });
+    Route::group(['prefix' => '/customer'], function () {
+        Route::get('/index', [QuanLyCustomerController::class, 'index']);
+        Route::get('/dulieu', [QuanLyCustomerController::class, 'getData']);
+        Route::get('/doi-trang-thai/{id}', [QuanLyCustomerController::class, 'doiTrangThai']);
+        Route::get('/delete/{id}', [QuanLyCustomerController::class, 'destroy']);
+    });
+
     Route::group(['prefix' => '/kho'], function () {
         Route::get('/index', [\App\Http\Controllers\KhoController::class, 'index']);
         Route::get('/data', [\App\Http\Controllers\KhoController::class, 'getData']);
@@ -218,6 +230,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function
     });
     //Quản lý hóa đơn trong ngày
     Route::group(['prefix' => '/doanh-thu'], function () {
+        //QUẢN LÝ HÓA ĐƠN THEO NGÀY ONLINE
         Route::get('/index', [\App\Http\Controllers\HoaDonController::class, 'page']);
         Route::post('/data', [\App\Http\Controllers\HoaDonController::class, 'TongHD']);
         Route::get('/hoa-don/{id}', [\App\Http\Controllers\HoaDonController::class, 'HoaDon']);
@@ -226,6 +239,16 @@ Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function
         Route::get('/ngay-hoa-don/{id}', [\App\Http\Controllers\HoaDonController::class, 'ngayHoaDon']);
         Route::get('/delete/{id}', [\App\Http\Controllers\HoaDonController::class, 'destroy']);
         Route::post('/in-bill/{id}', [\App\Http\Controllers\HoaDonController::class, 'StoreDoanhThu']);
+        //QUẢN LÝ HÓA ĐƠN THEO NGÀY OFFLINE
+        Route::get('/offline/index', [\App\Http\Controllers\HoaDonController::class, 'pageOffline']);
+        Route::post('/offline/data', [\App\Http\Controllers\HoaDonController::class, 'TongHDOffline']);
+        Route::get('/offline/ngay-hoa-don/{id}', [\App\Http\Controllers\HoaDonController::class, 'ngayHoaDonOffline']);
+        Route::get('/offline/hoa-don/{id}', [\App\Http\Controllers\HoaDonController::class, 'HDOffline']);
+        Route::post('/offline/search', [\App\Http\Controllers\HoaDonController::class, 'searchOffline']);
+        Route::post('/offline/updateqty', [\App\Http\Controllers\HoaDonController::class, 'updateqtyOffline']);
+        Route::get('/offline/delete/{id}', [\App\Http\Controllers\HoaDonController::class, 'destroyOffline']);
+        Route::post('/offline/in-bill/{id}', [\App\Http\Controllers\HoaDonController::class, 'StoreDoanhThuOffline']);
+
     });
     Route::group(['prefix' => '/nguyen-lieu'], function () {
         Route::get('/index', [\App\Http\Controllers\NguyenLieuController::class, 'index']);
@@ -281,6 +304,12 @@ Route::group(['prefix' => '/customer-off', 'middleware' => ['web', 'CustomerOffM
     Route::get('/ban/index', [ChiTietHoaDonController::class, 'indexBan']);
     Route::get('/ban/data', [ChiTietHoaDonController::class, 'dataBan']);
     Route::post('/create-hoa-don', [DonHangController::class, 'createHoaDon']);
+
+    /// quản lý đơn hàng của customer offline
+    Route::get('/hoa-don/index', [HoaDonOfflineController::class, 'index']);
+    Route::get('/hoa-don/data', [HoaDonOfflineController::class, 'dataHoaDon']);
+    Route::get('/huy/don-hang/{id}', [HoaDonOfflineController::class, 'destroy']);
+
 });
 
 

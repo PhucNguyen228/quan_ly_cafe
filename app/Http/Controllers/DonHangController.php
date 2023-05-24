@@ -118,7 +118,9 @@ class DonHangController extends Controller
                 'loai_hoa_don' => 2,
                 'ngay_hoa_don' => date('Y-m-d'),
                 'hoan_thanh'   => 1,
+                // 'tinh_trang_ban'   => 1,
             ]);
+            // dd($hoadon);
             foreach ($giohang as $key => $value) {
                 $giaBan = $value['don_gia'];
                 $thuc_tra +=  $value['so_luong'] * $giaBan;

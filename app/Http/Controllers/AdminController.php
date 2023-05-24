@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AdminRequest;
 use App\Models\HoaDon;
 use Carbon\Carbon;
+use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -114,5 +115,20 @@ class AdminController extends Controller
             //     );
             // }
         }
+    }
+    
+    public function demCustomer(){
+        $dataCustomer = TaiKhoan::where('loai_tai_khoan',4)->get();
+        $dem = 0;
+        if($dataCustomer) {
+            $dem = 0; // Initialize $dem to 0
+            foreach ($dataCustomer as $key => $value) {
+                $dem = $dem + 1;
+            }
+        }
+        // dd($dem);
+        return response()->json([
+            'demCustomer' => $dem,
+        ]);
     }
 }

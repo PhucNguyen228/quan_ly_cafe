@@ -15,7 +15,7 @@ class DanhGiaController extends Controller
         $customer = Auth::guard('TaiKhoan')->user();
 
         if ($data) {
-            $danhgia = DanhGia::where('san_pham_id', $id)->where('id_customer',$customer->id)->first();
+            $danhgia = DanhGia::where('san_pham_id', $id)->where('id_customer', $customer->id)->first();
             if ($danhgia) {
                 $danhgia->muc_do = 1;
                 $danhgia->save();
@@ -36,10 +36,11 @@ class DanhGiaController extends Controller
     }
     public function KhongHaiLong($id)
     {
+
         $data = SanPham::find($id);
         $customer = Auth::guard('TaiKhoan')->user();
         if ($data) {
-            $danhgia = DanhGia::where('san_pham_id', $id)->where('id_customer',$customer->id)->first();
+            $danhgia = DanhGia::where('san_pham_id', $id)->where('id_customer', $customer->id)->first();
             if ($danhgia) {
                 $danhgia->muc_do = 2;
                 $danhgia->save();

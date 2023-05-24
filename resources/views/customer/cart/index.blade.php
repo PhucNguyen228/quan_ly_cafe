@@ -85,7 +85,7 @@
                     <div class="cart-total mb-3">
                         <h3>Thông tin và địa chỉ giao hàng</h3>
                         <p>Nhập thông tin</p>
-                        <form action="#" class="info">
+                        <form action="#" class="info" id="resetform">
                             <div class="form-group">
                                 <label for="">Họ tên </label>
                                 <input name="ho_va_ten" value="{{ $customer->ho_va_ten }}" id="ho_va_ten" type="text"

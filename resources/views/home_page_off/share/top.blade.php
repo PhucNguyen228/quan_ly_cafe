@@ -21,7 +21,7 @@
                         <a href="#" class="nav-link dropdown-toggle"
                             data-toggle="dropdown">{{ Auth::guard('TaiKhoan')->user()->ho_va_ten }}</a>
                         <div class="dropdown-menu text-capitalize">
-                            <a href="reservation.html" class="dropdown-item">Thông Tin</a>
+                            <a href="/customer-off/hoa-don/index" class="dropdown-item">Thông Tin Đơn Hàng</a>
                             {{-- <a href="testimonial.html" class="dropdown-item">Testimonial</a> --}}
                             @if (Auth::guard('TaiKhoan')->check())
                                 <a class="dropdown-item" href="/customer-off/logout">
