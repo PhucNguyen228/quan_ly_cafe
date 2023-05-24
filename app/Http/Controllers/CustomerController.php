@@ -201,5 +201,5 @@ class CustomerController extends Controller
         toastr()->success('Đã cập nhật password thành công!');
         return redirect('/forgot');
     }
-
+    
 }

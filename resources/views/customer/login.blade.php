@@ -107,6 +107,7 @@
                     'email'     : email,
                     'password'  : password,
                 };
+            
                 $.ajax({
                     url     :   '/cafe/customer/login',
                     data    :   payload,

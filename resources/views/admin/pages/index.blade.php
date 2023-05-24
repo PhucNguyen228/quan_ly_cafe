@@ -541,8 +541,10 @@
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div class="media-body my-auto">
-                                            <h4 class="font-weight-bolder mb-0">8.549k</h4>
+                                        <div class="media-body my-auto" id="demCustomer">
+                                            <h4 class="font-weight-bolder mb-0 demTK" >
+
+                                            </h4>
                                             <p class="card-text font-small-3 mb-0">Customers</p>
                                         </div>
                                     </div>
@@ -787,4 +789,36 @@
             });
         });
     </script> --}}
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            function loadTableOffline() {
+                $.ajax({
+                    url: '/admin/dem/customer',
+                    type: 'get',
+                    success: function(res) {
+                        var html = '';
+                        var dem = res.demCustomer; // Lấy giá trị của biến dem từ response
+                        // console.log(dem);
+                        html += '<h4 class="font-weight-bolder mb-0 demTK">' + dem +
+                            '</span>';
+                        $("#demCustomer .demTK").html(html); // Sử dụng selector đúng để cập nhật nội dung vào phần tử con
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error); // Xử lý lỗi nếu có
+                    }
+                });
+            }
+            // setInterval(function() {
+            //     loadTableOffline()
+            // }, 1000);
+            loadTableOffline();
+        });
+    </script>
 @endsection
