@@ -73,8 +73,8 @@ class BanUserController extends Controller
         $ban = Ban::find($id);
         if ($ban) {
             $data = HoaDon::join('bans', 'hoa_dons.id_ban', 'bans.id')
-            ->where('hoa_dons.id_ban', $id)->where('tinh_trang_ban', 1)
-            ->select('bans.*', 'hoa_dons.*')->get();
+                ->where('hoa_dons.id_ban', $id)->where('loai_hoa_don', 2)->where('tinh_trang_ban', 1)
+                ->select('bans.*', 'hoa_dons.*')->get();
             if ($data) {
                 foreach ($data as $value) {
                     $value->tinh_trang_ban = 2;
@@ -86,7 +86,7 @@ class BanUserController extends Controller
                     'trangThai'         =>  true,
                     'tinhTrangBan'      =>  $ban->is_open_oder,
                 ]);
-            }else{
+            } else {
                 $ban->is_open_oder = !$ban->is_open_oder;
                 $ban->save();
                 return response()->json([

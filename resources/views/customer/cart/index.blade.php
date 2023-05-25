@@ -119,10 +119,16 @@
                             <span>Gía giảm: </span>
                             <span style="font-size: 20px" id="tongTienGiam">0&nbsp;₫</span>
                         </p>
+                        <p class="d-flex">
+                            <span>Tiền Vận Chuyển: </span>
+                        <h4 style="font-size: 20px" id="tienVanChuyen">0&nbsp;₫</h4>
+                        {{-- <input type="text" style="font-size: 20px" id="tienVanChuyen"> --}}
+                        </p>
                         <hr>
                         <p class="d-flex total-price">
                             <span>Total: </span>
                             <span style="font-size: 20px" id="tongTien"></span>
+                        <p style="color: red">Tiền chưa bao gồm vận chuyển</p>
                         </p>
                     </div>
 
@@ -254,12 +260,23 @@
                         // alert('Khoảng cách giữa hai địa chỉ là: ' + distance + ' Km');
                         // i want show distance in input
                         document.getElementById('distance').value = distance.toFixed(0);
+
+                        var tienVanChuyen = distance.toFixed(0) * 5000;
+                        var tienVanChuyenSpan = document.getElementById('tienVanChuyen');
+                        tienVanChuyenSpan.textContent = formatNumber(tienVanChuyen);
                     },
                     errorCallback: function(e) {
                         alert('Không thể tìm thấy địa chỉ');
                     }
                 });
             });
+        }
+
+        function formatNumber(number) {
+            return new Intl.NumberFormat('vi-VI', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(number);
         }
     </script>
 
@@ -280,6 +297,7 @@
                         var tongtien = 0;
                         var tongTienThuc = 0;
                         var tienGiam = 0;
+
                         $.each(res.data, function(key, value) {
                             console.log(value);
                             content_table += '<tr class="align-middle">';
@@ -378,26 +396,33 @@
                 var so_dien_thoai = $("#so_dien_thoai").val();
                 var dia_chi = $("#dia_chi").val();
                 var distance = $("#distance").val();
-                console.log(distance);
+                var distanceInt = parseInt(distance.match(/\d+/g).join(''), 10);
+                // console.log(distanceInt);
+
 
                 var Total = $("#tongTien").text();
                 var thuc_tra = Total.match(/\d+/g).join('');
 
                 var TienThuc = $("#tongTienThuc").text();
                 var tongTienThuc = TienThuc.match(/\d+/g).join('');
+                // var tongTienThuc = parseInt(TienThuc);
+                // console.log(tongTienThuc);
 
                 var giamGia = $("#tongTienGiam").text();
                 var tongTienGiam = giamGia.match(/\d+/g).join('');
 
                 if (distance <= 5) {
-                    thuc_tra = thuc_tra * 5;
+                    // console.log(typeof(distanceInt * 5000));
+                    // console.log(distanceInt * 5000);
+                    var tongtienthuctra = parseInt(thuc_tra) + (distanceInt * 5000);
+                    var tongtienchuagiam = parseInt(tongTienThuc) + (distanceInt * 5000);
                     var payload = {
                         'ho_va_ten': ho_va_ten,
                         'so_dien_thoai': so_dien_thoai,
                         'dia_chi': dia_chi,
-                        'tong_tien': tongTienThuc,
+                        'tong_tien': tongtienchuagiam,
                         'giam_gia': tongTienGiam,
-                        'thuc_tra': thuc_tra,
+                        'thuc_tra': tongtienthuctra,
                     };
                     // console.log(payload);
                     $.ajax({
@@ -416,8 +441,7 @@
                             }
                         },
                     });
-                }
-                else {
+                } else {
                     toastr.warning("không giao hàng quá 5km !");
                 }
 

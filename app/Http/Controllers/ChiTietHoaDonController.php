@@ -195,10 +195,10 @@ class ChiTietHoaDonController extends Controller
     {
         $customer = Auth::guard('TaiKhoan')->user();
         // dd($customer);
-        $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->first();
+        $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('loai_hoa_don', 2)->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->first();
         // dd($data);
         if ($data) {
-            $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->select('bans.*')->get();
+            $data = HoaDon::join('bans', 'bans.id', 'hoa_dons.id_ban')->where('loai_hoa_don', 2)->where('hoa_dons.tinh_trang_ban', 1)->where('hoa_dons.agent_id', $customer->id)->select('bans.*')->get();
             return response()->json([
                 'dataBan' => $data,
             ]);

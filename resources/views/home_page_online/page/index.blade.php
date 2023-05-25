@@ -8,7 +8,7 @@
             </fieldset>
         </div> --}}
 
-        {{-- <div class="container">
+        <div class="container">
             <div class="row g-0 gx-5 align-items-end">
                 <div class="col-lg-2">
                     <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
@@ -71,208 +71,89 @@
                 @endforeach
 
             </div>
-        </div> --}}
+        </div>
     </div>
-    <div id="chat-container">
+    {{-- <div id="chat-container">
         <div id="chat-log"></div>
         <input type="text" id="user-input" placeholder="Enter your message">
         <button id="send-btn">Send</button>
-    </div>
-    <section class="avenue-messenger">
-        <div class="menu">
-            <div class="items"><span>
-                    <a href="#" title="Minimize">&mdash;</a><br>
-                    <!--
-                   <a href="">enter email</a><br>
-                   <a href="">email transcript</a><br>-->
-                    <a href="#" title="End Chat">&#10005;</a>
+    </div> --}}
+    <div class="row">
+        <div class="col-md-12">
+            <button class="open-button" onclick="openForm()">Chat</button>
 
-                </span></div>
-            <div class="button">...</div>
-        </div>
-        <div class="agent-face">
-            <div class="half">
-                <img class="agent circle" src="http://askavenue.com/img/17.jpg" alt="Jesse Tino">
+            <div class="chat-popup" id="myForm">
+                <form class="form-container">
+                    <h1>Chat</h1>
+
+                    <label for="msg"><b>Message</b></label>
+                    <div id="chat-log" style="overflow-y: scroll;height: 300px;"></div>
+                    <textarea id="user-input" placeholder="Type message.." name="msg" required></textarea>
+
+                    <button type="submit" id="send-btn" class="btn">Send</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                </form>
             </div>
         </div>
-        <div class="chat">
-            <div class="chat-title">
-                <h1>Jesse Tino</h1>
-                <h2>RE/MAX</h2>
-            </div>
-            <div class="messages">
-                <div id="chat-log" class="messages-content"></div>
-            </div>
-            <div class="message-box">
-                <textarea type="text" id="user-input" class="message-input" placeholder="Type message..."></textarea>
-                <button id="send-btn" type="submit" class="message-submit">Send</button>
-            </div>
-        </div>
-        </div>
-        <!--<div class="bg"></div>-->
-    @endsection
-    @section('js')
-        {{-- <script>
+
+    </div>
+    <!--<div class="bg"></div>-->
+@endsection
+
+@section('js')
+    <script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+    <script>
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // Định nghĩa hàm cần thực thi
-            function myFunction() {
-                // Cập nhật các phần tử có class "choose" thành active
-                var elements = document.getElementsByClassName("choose");
-                for (var i = 0; i < elements.length; i++) {
-                    elements[i].classList.add("active");
-                }
-            }
 
-            // Sử dụng setInterval() để thực thi hàm myFunction() mỗi 2 giây
-            setInterval(myFunction, 1000);
+            var chatLog = $('#chat-log');
+            var userInput = $('#user-input');
+            var sendBtn = $('#send-btn');
+
+
+            // Gửi yêu cầu chatbot khi nhấn nút Send
+            sendBtn.click(function() {
+                var message = userInput.val();
+                console.log(message);
+                if (message.trim() !== '') {
+                    // sendMessage(message);
+                    userInput.val('');
+                }
+                // Hiển thị câu hỏi của người dùng trên giao diện
+                chatLog.append('<div class="user-message">' + message + '</div>');
+
+                // Gửi yêu cầu chatbot thông qua AJAX
+                $.ajax({
+                    url: '{{ route('chatbot.chat') }}',
+                    method: 'POST',
+                    data: {
+                        message: message
+                    },
+                    success: function(response) {
+                        // Hiển thị câu trả lời từ chatbot trên giao diện
+                        // alert(response);
+                        chatLog.append('<div class="bot-message">' + response.response +
+                            '</div>');
+                        // console.log(response.response);
+                    },
+                    error: function() {
+                        chatLog.append(
+                            '<div class="bot-message">Oops! Something went wrong.</div>');
+                    }
+                });
+            });
         });
-    </script> --}}
-        <script>
-            var $messages = $('.messages-content'),
-                d, h, m,
-                i = 0;
-
-            $(window).load(function() {
-                $messages.mCustomScrollbar();
-                setTimeout(function() {
-                    fakeMessage();
-                }, 100);
-            });
-
-
-            function updateScrollbar() {
-                $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', 'bottom', {
-                    scrollInertia: 10,
-                    timeout: 0
-                });
-            }
-
-            function setDate() {
-                d = new Date()
-                if (m != d.getMinutes()) {
-                    m = d.getMinutes();
-                    $('<div class="timestamp">' + d.getHours() + ':' + m + '</div>').appendTo($('.message:last'));
-                    $('<div class="checkmark-sent-delivered">&check;</div>').appendTo($('.message:last'));
-                    $('<div class="checkmark-read">&check;</div>').appendTo($('.message:last'));
-                }
-            }
-
-            function insertMessage() {
-                msg = $('.message-input').val();
-                if ($.trim(msg) == '') {
-                    return false;
-                }
-                $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-                setDate();
-                $('.message-input').val(null);
-                updateScrollbar();
-                setTimeout(function() {
-                    fakeMessage();
-                }, 1000 + (Math.random() * 20) * 100);
-            }
-
-            $('.message-submit').click(function() {
-                insertMessage();
-            });
-
-            $(window).on('keydown', function(e) {
-                if (e.which == 13) {
-                    insertMessage();
-                    return false;
-                }
-            })
-
-            var Fake = [
-                'Hi there, I\'m Jesse and you?',
-                'Nice to meet you',
-                'How are you?',
-                'Not too bad, thanks',
-                'What do you do?',
-                'That\'s awesome',
-                'Codepen is a nice place to stay',
-                'I think you\'re a nice person',
-                'Why do you think that?',
-                'Can you explain?',
-                'Anyway I\'ve gotta go now',
-                'It was a pleasure chat with you',
-                'Time to make a new codepen',
-                'Bye',
-                ':)'
-            ]
-
-            function fakeMessage() {
-                if ($('.message-input').val() != '') {
-                    return false;
-                }
-                $('<div class="message loading new"><figure class="avatar"><img src="http://askavenue.com/img/17.jpg" /></figure><span></span></div>')
-                    .appendTo($('.mCSB_container'));
-                updateScrollbar();
-
-                setTimeout(function() {
-                    $('.message.loading').remove();
-                    $('<div class="message new"><figure class="avatar"><img src="http://askavenue.com/img/17.jpg" /></figure>' +
-                        Fake[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');
-                    setDate();
-                    updateScrollbar();
-                    i++;
-                }, 1000 + (Math.random() * 20) * 100);
-
-            }
-
-            $('.button').click(function() {
-                $('.menu .items span').toggleClass('active');
-                $('.menu .button').toggleClass('active');
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                var chatLog = $('#chat-log');
-                var userInput = $('#user-input');
-                var sendBtn = $('#send-btn');
-
-
-                // Gửi yêu cầu chatbot khi nhấn nút Send
-                sendBtn.click(function() {
-                    var message = userInput.val();
-                    console.log(message);
-                    if (message.trim() !== '') {
-                        // sendMessage(message);
-                        userInput.val('');
-                    }
-                    // Hiển thị câu hỏi của người dùng trên giao diện
-                    chatLog.append('<div class="user-message">' + message + '</div>');
-
-                    // Gửi yêu cầu chatbot thông qua AJAX
-                    $.ajax({
-                        url: '{{ route('chatbot.chat') }}',
-                        method: 'POST',
-                        data: {
-                            message: message
-                        },
-                        success: function(response) {
-                            // Hiển thị câu trả lời từ chatbot trên giao diện
-                            // alert(response);
-                            chatLog.append('<div class="bot-message">' + response.response +
-                                '</div>');
-                            // console.log(response.response);
-                        },
-                        error: function() {
-                            chatLog.append(
-                                '<div class="bot-message">Oops! Something went wrong.</div>');
-                        }
-                    });
-                });
-            });
-        </script>
-    @endsection
+    </script>
+@endsection

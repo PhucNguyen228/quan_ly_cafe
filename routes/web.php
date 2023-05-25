@@ -107,9 +107,11 @@ Route::group(['prefix' => '/shipper', 'middleware' => 'ShipperWare'], function (
 
 //QUẢN LÝ ADMIN
 Route::get('/admin/login', [\App\Http\Controllers\AdminController::class, 'index']);
-Route::post('/filter', [\App\Http\Controllers\AdminController::class, 'filter'])->name('admin.doanh_thu.filter');
 Route::post('/admin/login', [\App\Http\Controllers\AdminController::class, 'loginAdmin']);
 Route::group(['prefix' => '/admin', 'middleware' => 'AdminMiddleWare'], function () {
+    Route::post('/filter', [\App\Http\Controllers\AdminController::class, 'filter'])->name('admin.doanh_thu.filter');
+    Route::post('/doanh-thu-on', [\App\Http\Controllers\AdminController::class, 'doanhThuOn'])->name('admin.doanh_thu_on');
+    Route::post('/doanh-thu-off', [\App\Http\Controllers\AdminController::class, 'doanhThuOff'])->name('admin.doanh_thu_off');
     Route::get('/logout', [\App\Http\Controllers\AdminController::class, 'logout']);
     Route::get('/index', [\App\Http\Controllers\AdminController::class, 'homeIndex']);
     Route::get('/dem', [\App\Http\Controllers\AdminController::class, 'demDonHang']);

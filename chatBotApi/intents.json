@@ -109,6 +109,42 @@
                 "I recently watched a great movie. Would you like me to recommend one?",
                 "I haven't tried any new restaurants, but I heard there's a great one downtown."
             ]
+        },
+        {
+            "tag": "cafe sữa",
+            "patterns": [
+                "cafe sữa"
+            ],
+            "responses": [
+                "Image: /photos/shares/cafe_sua.jpg\nProduct: cafe sữa\nPrice: 25000\nDiscount Price: 0\n"
+            ]
+        },
+        {
+            "tag": "trà sữa trân châu đường đen",
+            "patterns": [
+                "trà sữa trân châu đường đen"
+            ],
+            "responses": [
+                "Image: /photos/shares/hinh-anh-tra-sua-dep-va-ngon.jpg\nProduct: trà sữa trân châu đường đen\nPrice: 35000\nDiscount Price: 30000\n"
+            ]
+        },
+        {
+            "tag": "trà đào",
+            "patterns": [
+                "trà đào"
+            ],
+            "responses": [
+                "Image: /photos/shares/tra-thach-dao.jpg\nProduct: trà đào\nPrice: 40000\nDiscount Price: 30000\n"
+            ]
+        },
+        {
+            "tag": "trà sữa thái xanh",
+            "patterns": [
+                "trà sữa thái xanh"
+            ],
+            "responses": [
+                "Image: /photos/shares/imager_7_14632_700.jpg\nProduct: trà sữa thái xanh\nPrice: 15000\nDiscount Price: 0\n"
+            ]
         }
     ]
 }

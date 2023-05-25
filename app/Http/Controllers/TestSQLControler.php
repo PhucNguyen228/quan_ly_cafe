@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DanhGia;
 use App\Models\HoaDon;
+use App\Models\Kho;
 use App\Models\SanPham;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,8 +19,8 @@ class TestSQLControler extends Controller
         //                 ->select('san_phams.*','tai_khoans.ho_va_ten')
         //                 ->get();
         // dd($data);
-        $data = HoaDon::whereRaw('YEAR(ngay_hoa_don) = 2023')->where('hoan_thanh', 2)->get();
-        dd($data);
+        // $data = HoaDon::whereRaw('YEAR(ngay_hoa_don) = 2023')->where('hoan_thanh', 2)->get();
+        // dd($data);
         // $data = SanPham::join('danh_gias','danh_gias.san_pham_id','san_phams.id')
         //                 ->select('san_phams.*')
         //                 ->get();
@@ -33,12 +34,44 @@ class TestSQLControler extends Controller
         //     ->groupBy('san_phams.id');
         //     $data = $data->get();
 
-            $data = HoaDon::
-            whereRaw("DAY(ngay_hoa_don) = 20")
+        // $data = HoaDon::
+        // whereRaw("DAY(ngay_hoa_don) = 20")
+        // ->get();
+        // dd($data->toArray());
+
+        $data = HoaDon::whereMonth('ngay_hoa_don', 5)
+            ->whereYear('ngay_hoa_don', 2023)
+            ->where('loai_hoa_don', 1)
+            ->where('hoan_thanh', 2)
             ->get();
-            dd($data->toArray());
+        $data_loiNhuan = Kho::whereMonth('created_at', 5)
+            ->whereYear('created_at', 2023)
+            ->get();
+        $tongTienKho = 0;
+        foreach ($data_loiNhuan as $key => $value) {
+            $tongTienKho = $tongTienKho + $value->thanh_tien;
+        }
+        $TongTien = $tongTienKho;
+        $tong = 0;
+        foreach ($data as $key => $value) {
+            $tong = $tong + $value->thuc_tra;
+        }
+        $tongBan = $tong;
+        $loiNhuan = $tongBan - $TongTien;
+        dd($loiNhuan);
 
 
+        // dd($tong);
+        // $data = HoaDon::whereMonth('ngay_hoa_don', 5)
+        //     ->whereYear('ngay_hoa_don', 2023)
+        //     ->where('loai_hoa_don', 2)
+        //     ->where('hoan_thanh', 2)
+        //     ->get();
+        // $tong = 0;
+        // foreach ($data as $key => $value) {
+        //     $tong = $tong + $value->thuc_tra;
+        // }
+        // dd($tong);
 
     }
 }

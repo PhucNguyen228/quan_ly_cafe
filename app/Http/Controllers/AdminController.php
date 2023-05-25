@@ -92,35 +92,81 @@ class AdminController extends Controller
             $get = HoaDon::where('ngay_hoa_don', 'LIKE', '%' . $from_date . '%')->where('hoan_thanh', 2)->orderBy('ngay_hoa_don', 'ASC')->get()->groupBy(function ($date) {
                 return Carbon::parse($date->ngay_hoa_don)->format('m/y');
             });
-            // dd($get);
-            foreach ($get as $month => $values) {
-                $tong_tien = array_sum(array_column($values->toArray(), 'thuc_tra'));
-                // dd(array_column($values->toArray(), 'tong_doanh_thu'));
+            if ($get->isEmpty()) {
                 $chart_data[] = array(
-                    'Thang_thu_nhap' => $month,
-                    'Tong_tien'      => $tong_tien,
+                    'Thang_thu_nhap' => 0,
+                    'Tong_tien'      => 0,
                 );
+                return response()->json(
+                    [
+                        'data' => $chart_data,
+                        'status' => false,
+                    ]
+                );
+            } else {
+                foreach ($get as $month => $values) {
+                    $tong_tien = array_sum(array_column($values->toArray(), 'thuc_tra'));
+                    // dd(array_column($values->toArray(), 'tong_doanh_thu'));
+                    $chart_data[] = array(
+                        'Thang_thu_nhap' => $month,
+                        'Tong_tien'      => $tong_tien,
+                    );
+                }
+                return response()->json([
+                    'status' => true,
+                    'data' => $chart_data,
+
+                ]);
             }
-            return response()->json($chart_data);
-            // dd($chart_data);
-            // $tong_tien = 0;
-            // foreach ($get as $values) {
-            //     // dd($values);
-            //     $ngay_hoa_don = Carbon::parse($values->ngay_hoa_don)->format('m/Y');
-            //     $tong_tien += $values->thuc_tra;
-            //     // dd(array_column($values->toArray(), 'thuc_tra'));
-            //     $chart_data = array(
-            //         'Nam' => $ngay_hoa_don,
-            //         'Tong_tien'      => $tong_tien,
-            //     );
-            // }
         }
     }
-    
-    public function demCustomer(){
-        $dataCustomer = TaiKhoan::where('loai_tai_khoan',4)->get();
+
+    public function doanhThuOn(Request $request)
+    {
+        // dd($request->all());
+        // slipt $request->all() to get month and year
+        $year = substr($request->all()['ngay_hoa_don'], 0, 4);
+        $month = substr($request->all()['ngay_hoa_don'], 5, 6);
+        // dd($month, $year);
+        $data = HoaDon::whereMonth('ngay_hoa_don', $month)
+            ->whereYear('ngay_hoa_don', $year)
+            ->where('loai_hoa_don', 1)
+            ->where('hoan_thanh', 2)
+            ->get();
+        $tong = 0;
+        foreach ($data as $key => $value) {
+            $tong = $tong + $value->thuc_tra;
+        }
+        return response()->json([
+            'tong' => $tong,
+            'status' => true,
+        ]);
+    }
+
+    public function doanhThuOff(Request $request)
+    {
+        $year = substr($request->all()['ngay_hoa_don'], 0, 4);
+        $month = substr($request->all()['ngay_hoa_don'], 5, 6);
+        $data = HoaDon::whereMonth('ngay_hoa_don', $month)
+            ->whereYear('ngay_hoa_don', $year)
+            ->where('loai_hoa_don', 2)
+            ->where('hoan_thanh', 2)
+            ->get();
+        $tong = 0;
+        foreach ($data as $key => $value) {
+            $tong = $tong + $value->thuc_tra;
+        }
+        return response()->json([
+            'tong' => $tong,
+            'status' => true,
+        ]);
+    }
+
+    public function demCustomer()
+    {
+        $dataCustomer = TaiKhoan::where('loai_tai_khoan', 4)->get();
         $dem = 0;
-        if($dataCustomer) {
+        if ($dataCustomer) {
             $dem = 0; // Initialize $dem to 0
             foreach ($dataCustomer as $key => $value) {
                 $dem = $dem + 1;

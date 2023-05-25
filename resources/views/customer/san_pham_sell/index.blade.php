@@ -42,7 +42,8 @@
                             .anh_dai_dien + ' alt="">' +
                             '</div>' +
                             '<div class="text-center p-4" style = "width: 300px;height: 104px " >' +
-                            '<a class="d-block h5 mb-2" href="">' + value.ten_san_pham +
+                            '<a class="d-block h5 mb-2" href="/cafe/chi-tiet-san-pham/' + value.id +
+                            '">' + value.ten_san_pham +
                             '</a>';
 
                         if (value.gia_khuyen_mai == 0) {
